@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h3>Confira o Clima da Cidade</h3>
+    <div class="form">
+        <input type="text" id="cidade" placeholder="Digite o nome da cidade">
+        <button id="procurar">Buscar</button>
+    </div>
+    <script>
+        function validateCityName(city){
+            const Cidade = /^[A-Za-zÀ-ÿ\s-]+$/;
+            return Cidade.test(city.trim())
+        }
+        async function getWeather(city){
+           const apiKey = '75d0425a1865756b62261bd623df7c00'; 
+      const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=pt`;
+      try {
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+                if (response.ok) {
+                    alert(`Temperatura atual em ${city}: ${data.main.temp}°C`);
+                } else {
+                    alert(`Erro: ${data.message}`);
+                }
+            } catch (error) {
+                alert("Erro na requisição: " + error.message);
+            }
+            
+        }
+        
+        document.getElementById("procurar").addEventListener("click", function() {
+                const city = document.getElementById("cidade").value
+                if (validateCityName(city)) {
+                getWeather(city);
+            } else {
+                alert("Nome de cidade inválido. Use apenas letras, espaços e traços.");
+            }
+
+            } )
+        
+    </script>
+   
+</body>
+</html>
